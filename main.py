@@ -1,6 +1,6 @@
 phone_book = {}
 
-def open_file(path: str = 'Python\HW 8\phones.txt'):
+def open_file(path: str = 'Python\HW 8\Python-HW-8\phones.txt'):
   phone_book.clear()
   file = open(path, 'r', encoding = 'UTF-8')
   data = file.readlines()
@@ -23,8 +23,10 @@ def add_contact():
   phone = input('Введите телефон контакта: ')
   comment = input('Введите комментарий к контакту: ')
   phone_book[uid + 1] = {'name': name, 'phone': phone, 'comment': comment}
+  print(f'\nКонтакт {name} успешно добавлен в книгу!')
+  print('=' * 200 + '\n')
 
-def save_file(path: str = 'Python\HW 8\phones.txt'):
+def save_file(path: str = 'Python\HW 8\Python-HW-8\phones.txt'):
   data = []
   for i, contact in phone_book.items():
     new = ':'.join([str(i),contact.get('name'), contact.get('phone'), contact.get('comment')])
@@ -43,6 +45,32 @@ def search():
     if word.lower() in ' '.join(list(contact.values())).lower():
       result[i] = contact
   return result
+
+def remove_contact():
+  result = search()
+  show_contacts(result)
+  index = input('Введите ID контакта, который хотим удалить или, если вы передумали, то введите "ОТМЕНА": ')
+  if index.upper() == 'ОТМЕНА':
+    pass
+  else:
+    index = int(index)
+    del_cnt = phone_book.pop(index)
+    print(f'\nКонтакт {del_cnt.get("name")} успешно удалён из книги!')
+    print('=' * 200 + '\n')
+
+def change_contact():
+  result = search()
+  show_contacts(result)
+  index = int(input('Введите ID контакта, который хотите изменить(ВНИМАНИЕ! НУЖНО ВВОДИТЬ ВСЕ ДАННЫЕ ЗАНОВО): '))
+  uid = index
+  
+  name = input('Введите имя контакта: ')
+  phone = input('Введите телефон контакта: ')
+  comment = input('Введите комментарий к контакту: ')
+  phone_book[uid] = {'name': name, 'phone': phone, 'comment': comment}
+  print(f'\nКонтакт {uid} успешно отредактирован!')
+  print('=' * 200 + '\n')
+
 
 open_file()
 def menu() -> int:
@@ -77,9 +105,9 @@ while True:
       result = search()
       show_contacts(result)
     case 6:
-      pass
+      change_contact()
     case 7:
-      pass
+      remove_contact()
     case 8:
       print("До свидания! До новых встреч!")
       break
